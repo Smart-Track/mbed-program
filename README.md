@@ -1,10 +1,8 @@
 # Smart Track - Mbed Program
 
-Smart Track is a modular race track controlled a master PC GUI and a slave ARM Mbed. This repo contains the Mbed code. For the GUI code, see [the Smart Track GUI repo](https://github.com/Smart-Track/GUI-program).
+Smart Track is a modular race track for RC cars controlled by an ARM Mbed and C# GUI. This repo contains the Mbed code. For the GUI code, see [the Smart Track GUI repo](https://github.com/Smart-Track/GUI-program).
 
 Smart Track has three checkpoints, including one starting line checkpoint. These detect passing objects using sonar and can be placed anywhere to define the shape of the track. All hardware is controlled by the Mbed, which must be connected to a device running the GUI program. The GUI starts the race and resets the Mbed when the race is over. It also runs the race timer and keeps a record of past races.
-
-On startup, the Mbed waits to be started by the GUI before begining a starting countdown. The race begins after the countdown finishes and the player first crosses the starting line. During the race, the player must cross each checkpoint in order. When they cross a checkpoint, its LEDs will turn on and a sound will play to indicate that the checkpoint has been crossed. The Mbed will then send this information to the GUI for timing. The race is finished after completing three laps, at which point the player will be prompted to enter their initials into the GUI for placement on a leaderboard. The Mbed can then be reset by the GUI to start another race.
 
 # Setup
 
@@ -151,3 +149,64 @@ The TX pin on the 7-segment display is a no connect.
 ## Mbed Software
 
 Either compile the contents of `/Smart-Track/mbed-program/mbed_code/` or download `Smart_Track.LPC1768.bin` to the Mbed.
+
+# Usage
+
+## Video Demonstration
+
+[![Smart Track Demonstration Video](http://img.youtube.com/vi/PeGzZbilnq4/0.jpg)](http://www.youtube.com/watch?v=PeGzZbilnq4)
+
+Direct link: https://www.youtube.com/watch?v=PeGzZbilnq4
+
+## Communication
+
+The Mbed and GUI communicate with each other by sending certain ASCII characters over the USB cable, as shown in the tables below.
+
+### Mbed to PC
+
+| Character    | Meaning |
+|:-------------:|:--------:|
+| '0' | lap 1, past starting line |
+| '1' | lap 1, past checkpoint 1 |
+| '2' | lap 1, past checkpoint 2 |
+| '3' | lap 2, past starting line |
+| '4' | lap 2, past checkpoint 1 |
+| '5' | lap 2, past checkpoint 2 |
+| '6' | lap 3, past starting line |
+| '7' | lap 3, past checkpoint 1 |
+| '8' | lap 3, past checkpoint 2 |
+| '9' | end race |
+
+### PC to Mbed
+
+| Character    | Meaning |
+|:-------------:|:--------:|
+| 'S' | start race |
+| 'R' | reset |
+
+## Race
+
+After setting up the hardware, connect the Mbed to a PC using a USB cable and run the Smart Track GUI program. Select the appropriate COM port for the Mbed in the upper left corner. On startup, give one or two seconds for the Mbed to perform calibration. 
+
+After that, you can start a race by clicking the "Start Race" button, which will begin a countdown sequence on the 7-segment display and RGB LEDs. The GUI keeps time, but doesn't start the timer until the player first crosses the starting line. During the race, the player must cross all of the checkpoints in order, and upon crossing a checkpoint, a sound will play and the checkpoint's LEDs will turn on to indicate that the checkpoint has been passed. The current lap is displayed on the starting line's RGB LEDs, and the race is finished after completing three laps, at which point the GUI will prompt the player to enter their initials and record their times on an internal leaderboard. The system can then be reset by clicking the "Reset" button in the bottom right corner.
+
+## False Starts
+
+If the player crosses the starting line before the countdown finishes, a siren will play and the LEDs will flash. The race is discarded, and the Mbed must be reset to start a new race.
+
+# Image Gallery
+
+![image-20210430-154437-a2d73727](https://user-images.githubusercontent.com/68122426/117200580-9ed13d80-adb9-11eb-9073-e2c98b634fc8.jpeg)
+![image-20210430-154442-ae8883db](https://user-images.githubusercontent.com/68122426/117200600-a4c71e80-adb9-11eb-86b8-e8b59b56cfc7.jpeg)
+![image-20210430-154551-0cab5338](https://user-images.githubusercontent.com/68122426/117200744-d50ebd00-adb9-11eb-89c5-c27a4092294a.jpeg)
+![image-20210430-154625-e53be03d](https://user-images.githubusercontent.com/68122426/117200785-e1931580-adb9-11eb-9723-2b6e393c90b3.jpeg)
+![20210420_120333(1)](https://user-images.githubusercontent.com/68122426/117200971-1acb8580-adba-11eb-9041-938fc7d0b57d.jpg)
+![App Window](https://user-images.githubusercontent.com/68122426/117201116-46e70680-adba-11eb-9292-a83ecacb23c9.JPG)
+![Initials WIndow](https://user-images.githubusercontent.com/68122426/117201130-4b132400-adba-11eb-8110-bc6d730320f5.JPG)
+![Leaderboard](https://user-images.githubusercontent.com/68122426/117201138-4c445100-adba-11eb-9f4e-5460ec7a69e3.JPG)
+
+# Authors
+
+* [Aaron Hoffman](https://github.com/ahoffman41)
+* [Dan Tran](https://github.com/dtran76)
+* [Greg Lanier](https://github.com/glanier9)
